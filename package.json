@@ -1,0 +1,33 @@
+{
+  "name": "grid-cms-sdk",
+  "version": "1.0.0",
+  "description": "The grid-cms fetcher library",
+  "main": "index.js",
+  "scripts": {
+    "test": "test -v"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kotobuki562/grid-cms-SDK.git"
+  },
+  "keywords": [
+    "jamstack",
+    "npm",
+    "fetcher",
+    "query",
+    "grid-cms",
+    "spreadsheet",
+    "googleapis",
+    "cms",
+    "headlesscms"
+  ],
+  "author": "hiromasaishiwata <kotobukitsukasaneko33@gmail.com> (http://plgn-foods.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kotobuki562/grid-cms-SDK/issues"
+  },
+  "homepage": "https://github.com/kotobuki562/grid-cms-SDK#readme",
+  "dependencies": {
+    "googleapis": "^87.0.0"
+  }
+}
