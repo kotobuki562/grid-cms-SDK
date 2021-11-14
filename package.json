@@ -2,7 +2,7 @@
   "name": "grid-cms-sdk",
   "version": "1.0.0",
   "description": "The grid-cms fetcher library",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "test -v"
   },
