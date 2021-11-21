@@ -8,6 +8,8 @@ type Props = {
   range: string;
 };
 
+export const foo: string = "foo";
+
 export const createClient = ({
   email,
   privateKey,
@@ -25,22 +27,12 @@ export const createClient = ({
   return google.sheets({ version: "v4", auth: jwt });
 };
 
-export const getSheet = async ({
-  email,
-  privateKey,
-  spreadsheetId,
-  range,
-}: Props): Promise<{ contents: any[]; colms: string[] }> => {
-  const scopes = ["https://www.googleapis.com/auth/spreadsheets.readonly"];
-  const jwt = new google.auth.JWT({
-    email: email,
-    key: privateKey,
-    scopes,
-  });
-
-  const sheets = google.sheets({ version: "v4", auth: jwt });
+export const getSheet = async (
+  client: sheets_v4.Sheets,
+  { spreadsheetId, range }: Props
+): Promise<{ contents: any[]; colms: string[] }> => {
   try {
-    const response = await sheets.spreadsheets.values.get({
+    const response = await client.spreadsheets.values.get({
       spreadsheetId: spreadsheetId,
       range: range,
     });
@@ -67,7 +59,7 @@ export const getSheet = async ({
               try {
                 acc[key] = JSON.parse(obj[key]);
               } catch (e) {
-                throw new Error(e);
+                throw new Error("JSON parse error");
               }
             } else {
               acc[key] = obj[key];
@@ -79,7 +71,7 @@ export const getSheet = async ({
       return { contents, colms };
     }
   } catch (e) {
-    throw new Error(e);
+    throw new Error("error");
   }
   return { contents: [], colms: [] };
 };
