@@ -1,15 +1,5 @@
 import { google, sheets_v4 } from "googleapis";
 
-type Props = {
-  email: string;
-  privateKey: string;
-  refreshToken: string;
-  spreadsheetId: string;
-  range: string;
-};
-
-export const foo: string = "foo";
-
 export const createClient = ({
   email,
   privateKey,
@@ -29,7 +19,13 @@ export const createClient = ({
 
 export const getSheet = async (
   client: sheets_v4.Sheets,
-  { spreadsheetId, range }: Props
+  {
+    spreadsheetId,
+    range,
+  }: {
+    spreadsheetId: string;
+    range: string;
+  }
 ): Promise<{ contents: any[]; colms: string[] }> => {
   try {
     const response = await client.spreadsheets.values.get({

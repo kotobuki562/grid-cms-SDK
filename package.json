@@ -1,8 +1,11 @@
 {
   "name": "grid-cms-sdk",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "The grid-cms fetcher library",
-  "main": "index.ts",
+  "main": "./dist/cjs/grid-cms-sdk.js",
+  "module": "./dist/esm/grid-cms-sdk.js",
+  "unpkg": "./dist/umd/grid-cms-sdk.js",
+  "types": "./dist/cjs/index.d.ts",
   "scripts": {
     "test": "test -v"
   },
@@ -20,6 +23,9 @@
     "googleapis",
     "cms",
     "headlesscms"
+  ],
+  "files": [
+    "dist"
   ],
   "author": "hiromasaishiwata <kotobukitsukasaneko33@gmail.com> (http://plgn-foods.com/)",
   "license": "MIT",
