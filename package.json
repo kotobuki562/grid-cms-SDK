@@ -1,6 +1,6 @@
 {
   "name": "grid-cms-sdk",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "The grid-cms fetcher library",
   "main": "./dist/cjs/grid-cms-sdk.js",
   "module": "./dist/esm/grid-cms-sdk.js",

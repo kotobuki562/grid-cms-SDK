@@ -1,4 +1,4 @@
-import { google, sheets_v4 } from "googleapis";
+import { google, sheets_v4, GoogleApis } from "googleapis";
 
 export const createClient = ({
   email,
@@ -7,17 +7,18 @@ export const createClient = ({
   email: string;
   privateKey: string;
 }): sheets_v4.Sheets => {
+  const googleapis = new GoogleApis();
   const scopes = ["https://www.googleapis.com/auth/spreadsheets.readonly"];
-  const jwt = new google.auth.JWT({
+  const jwt = new googleapis.auth.JWT({
     email: email,
-    key: privateKey,
+    key: (privateKey || "").replace(/\\n/g, "\n"),
     scopes,
   });
 
   return google.sheets({ version: "v4", auth: jwt });
 };
 
-export const getSheet = async (
+export const getSheet = async <T>(
   client: sheets_v4.Sheets,
   {
     spreadsheetId,
@@ -26,7 +27,7 @@ export const getSheet = async (
     spreadsheetId: string;
     range: string;
   }
-): Promise<{ contents: any[]; colms: string[] }> => {
+): Promise<{ contents: T[]; colms: string[] }> => {
   try {
     const response = await client.spreadsheets.values.get({
       spreadsheetId: spreadsheetId,
@@ -41,7 +42,7 @@ export const getSheet = async (
         return row;
       });
       // forを使ってkeysをキーにして、それを返す
-      const contents: any[] = [];
+      const contents: T[] = [];
       for (const row of rows.slice(1, rows.length)) {
         const obj: any = {};
         for (let i = 0; i < row.length; i++) {
