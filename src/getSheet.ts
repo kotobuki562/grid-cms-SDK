@@ -1,6 +1,6 @@
 import { JWT } from "google-auth-library";
 
-export const getSheet = async <T>(
+export const getSheet = async (
   client: JWT,
   {
     spreadsheetId,
@@ -9,14 +9,16 @@ export const getSheet = async <T>(
     spreadsheetId: string;
     range: string;
   }
-): Promise<{ contents: T[]; colms: string[] }> => {
+): Promise<{ contents: any[]; colms: string[] }> => {
   try {
     const accessToken = await client.getAccessToken();
-    const response = await fetch(
+
+    const res = await fetch(
       `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}`,
       {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${accessToken.token}`,
+          Accept: "application/json",
         },
       }
     );
@@ -24,17 +26,17 @@ export const getSheet = async <T>(
       range: string;
       majorDimension: string;
       values: any[][];
-    } = await response.json();
+    } = await res.json();
 
     const rows = data.values;
 
-    if (rows) {
+    if (rows.length > 0) {
       /// rpows[0]の値を展開して、それを返す
       const [colms] = rows.slice(0, 1).map((row) => {
         return row;
       });
       // forを使ってkeysをキーにして、それを返す
-      const contents: T[] = [];
+      const contents: any[] = [];
       for (const row of rows.slice(1, rows.length)) {
         const obj: any = {};
         for (let i = 0; i < row.length; i++) {
@@ -58,9 +60,10 @@ export const getSheet = async <T>(
         );
       }
       return { contents, colms };
+    } else {
+      throw new Error("Not Found sheet rows");
     }
   } catch (e) {
     throw new Error("error");
   }
-  return { contents: [], colms: [] };
 };
