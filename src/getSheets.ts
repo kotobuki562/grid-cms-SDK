@@ -1,36 +1,46 @@
 import { JWT } from "google-auth-library";
-import { ResponseSheetData, Option } from "./type";
+import { ResponseGoogleApiSheets, Option, ResponseSheetsData } from "./type";
 
-export const getSheet = async <T>(
+export const getSheets = async (
   client: JWT,
-  option: Option
-): Promise<ResponseSheetData<T>> => {
+  option: Omit<Option, "range"> & { ranges: string[] }
+): Promise<ResponseSheetsData[]> => {
   const accessToken = await client.getAccessToken();
-
-  const res = await fetch(
-    `https://sheets.googleapis.com/v4/spreadsheets/${option.spreadsheetId}/values/${option.range}`,
+  const getData = await fetch(
+    `https://sheets.googleapis.com/v4/spreadsheets/${option.spreadsheetId}/values:batchGetByDataFilter`,
     {
+      method: "POST",
       headers: {
         Authorization: `Bearer ${accessToken.token}`,
         Accept: "application/json",
       },
+      body: JSON.stringify({
+        dataFilters: option.ranges.map((range) => {
+          return {
+            a1Range: range,
+          };
+        }),
+      }),
     }
   );
-  const data: {
-    range: string;
-    majorDimension: string;
-    values: any[][];
-  } = await res.json();
+  const batchData: ResponseGoogleApiSheets = await getData.json();
 
-  const rows = data.values;
+  const batchDataValues = batchData.valueRanges.map((range) => {
+    return range.valueRange.values;
+  });
 
-  if (rows.length > 0) {
-    /// rpows[0]の値を展開して、それを返す
+  const result = batchDataValues.map((row) => {
+    return row.map((col) => {
+      return col;
+    });
+  });
+
+  const resultRows = result.map((rows) => {
     const [colms] = rows.slice(0, 1).map((row) => {
       return row;
     });
-    // forを使ってkeysをキーにして、それを返す
-    const contents: T[] = [];
+
+    const contents: any[] = [];
     for (const row of rows.slice(1, rows.length)) {
       const obj: any = {};
       for (let i = 0; i < row.length; i++) {
@@ -53,8 +63,10 @@ export const getSheet = async <T>(
         }, {})
       );
     }
-    return { contents, colms };
-  } else {
-    throw new Error("Not Found sheet rows");
-  }
+    return {
+      colms,
+      contents,
+    };
+  });
+  return resultRows;
 };
