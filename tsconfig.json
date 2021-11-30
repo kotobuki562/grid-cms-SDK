@@ -1,18 +1,20 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "es6",
     "allowJs": true,
     "resolveJsonModule": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "lib": ["es6", "es2015", "es2016", "es2017", "dom"],
     "declaration": true,
-    "outDir": "dist",
+    "types": ["node", "jest"],
+    "sourceMap": true,
+    "module": "commonjs",
+    "outDir": "./dist",
+    "rootDir": "./src",
     "strict": true,
-    "types": ["node"],
     "esModuleInterop": true,
-    "sourceMap": true
+    "forceConsistentCasingInFileNames": true
   },
   "include": ["./src/**/*"],
   "exclude": [
