@@ -62,14 +62,3 @@ jobs:
           node-version: 14.17
       - run: yarn install
       - run: yarn test
-
-  slack-notify:
-    if: always()
-    needs: [lint, test]
-    name: workflow notification to slack
-    runs-on: ubuntu-latest
-    steps:
-      - uses: Gamesight/slack-workflow-status@master
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
