@@ -17,7 +17,7 @@
     "url": "git+https://github.com/kotobuki562/grid-cms-SDK.git"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com",
+    "registry": "https://registry.npmjs.org/",
     "repository": "git://github.com/kotobuki562/grid-cms-SDK.git"
   },
   "keywords": [
