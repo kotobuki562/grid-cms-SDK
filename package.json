@@ -17,7 +17,8 @@
     "url": "git+https://github.com/kotobuki562/grid-cms-SDK.git"
   },
   "publishConfig": {
-    "registry": "git://github.com/kotobuki562/grid-cms-SDK.git"
+    "registry": "https://npm.pkg.github.com",
+    "repository": "git://github.com/kotobuki562/grid-cms-SDK.git"
   },
   "keywords": [
     "jamstack",
