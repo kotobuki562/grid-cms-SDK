@@ -29,19 +29,30 @@ get [colms] -> string[]
 
 ```index.ts
 import { getSheet } from "grid-cms-sdk/dist";
-import { client } from "src/gridCMS"
+import { client, getSheets } from "src/gridCMS"
 
 export const getServerSideProps = async () => {
-  const res = await getSheet(client, {
+  const res = await getSheet<any>(client, {
     spreadsheetId: /// Your spreadsheet ID ///,
     range: /// Your spreadsheet name ///,
   });
 
+  const resSheets = await getSheets(client, {
+    spreadsheetId: /// Your spreadsheet ID ///,
+    ranges: [/// Your spreadsheet names ///],
+  });
+
   return {
     props: {
-      contents: res.contents,
-      colms: res.colms
+      res: {
+        contents: res.contemts,
+        colms: res.colms.
+      },
+      resSheets
     },
   };
 };
+
+// resSheets is "res" Array
+
 ```
