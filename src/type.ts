@@ -18,6 +18,11 @@ export interface ResponseSheetsData {
   colms: string[];
 }
 
+export interface ResponseGoogleApiByRange {
+  range: string;
+  majorDimension: string;
+  values: any[][];
+}
 export interface ResponseGoogleApiSheets {
   spreadsheetId: string;
   valueRanges: {
@@ -31,3 +36,5 @@ export interface ResponseGoogleApiSheets {
     };
   }[];
 }
+
+export type UsageApi = "getSheet" | "getSheets";
