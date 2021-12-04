@@ -1,5 +1,7 @@
 import { JWT } from "google-auth-library";
 import { ResponseGoogleApiSheets, Option, ResponseSheetsData } from "./type";
+import { parseJson } from "./utils/createJson";
+import { createUri } from "./utils/fetcher";
 
 export const getSheets = async (
   client: JWT,
@@ -7,7 +9,9 @@ export const getSheets = async (
 ): Promise<ResponseSheetsData[]> => {
   const accessToken = await client.getAccessToken();
   const getData = await fetch(
-    `https://sheets.googleapis.com/v4/spreadsheets/${option.spreadsheetId}/values:batchGetByDataFilter`,
+    createUri("getSheets", {
+      spreadsheetId: option.spreadsheetId,
+    }),
     {
       method: "POST",
       headers: {
@@ -40,29 +44,7 @@ export const getSheets = async (
       return row;
     });
 
-    const contents: any[] = [];
-    for (const row of rows.slice(1, rows.length)) {
-      const obj: any = {};
-      for (let i = 0; i < row.length; i++) {
-        obj[colms[i]] = row[i];
-      }
-      // オブジェクトのキーに、"JSON"の文字列があれば、JSON.parseして、それを返す
-      contents.push(
-        // obj
-        Object.keys(obj).reduce((acc: any, key: string) => {
-          if (key.includes("JSON")) {
-            try {
-              acc[key] = JSON.parse(obj[key]);
-            } catch (e) {
-              throw new Error("JSON parse error");
-            }
-          } else {
-            acc[key] = obj[key];
-          }
-          return acc;
-        }, {})
-      );
-    }
+    const contents = parseJson<any>(rows, colms);
     return {
       colms,
       contents,
