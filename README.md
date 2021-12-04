@@ -28,8 +28,8 @@ get [contents] -> JSON
 get [colms] -> string[]
 
 ```index.ts
-import { getSheet } from "grid-cms-sdk/dist";
-import { client, getSheets } from "src/gridCMS"
+import { getSheet, getSheets } from "grid-cms-sdk/dist";
+import { client } from "src/gridCMS"
 
 export const getServerSideProps = async () => {
   const res = await getSheet<any>(client, {
