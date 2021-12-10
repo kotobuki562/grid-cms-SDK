@@ -1,5 +1,5 @@
 {
-  "name": "grid-cms-sdk",
+  "name": "@kotobuki562/grid-cms-sdk",
   "version": "1.2.0",
   "private": false,
   "description": "The grid-cms fetcher library",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kotobuki562/grid-cms-SDK.git"
+    "url": "https://github.com/kotobuki562/grid-cms-SDK.git"
   },
   "keywords": [
     "jamstack",
