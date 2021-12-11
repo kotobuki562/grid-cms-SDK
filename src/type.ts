@@ -37,4 +37,9 @@ export interface ResponseGoogleApiSheets {
   }[];
 }
 
+export interface Pagenation {
+  limit: number;
+  offset: number;
+}
+
 export type UsageApi = "getSheet" | "getSheets";
