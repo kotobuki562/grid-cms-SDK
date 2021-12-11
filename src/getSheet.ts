@@ -44,9 +44,10 @@ export const getSheet = async <T>(
       return {
         contents: pageItems,
         colms,
+        totalCount: contents.length,
       };
     }
-    return { contents, colms };
+    return { contents, colms, totalCount: contents.length };
   } else {
     throw new Error("Not Found sheet rows");
   }

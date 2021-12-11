@@ -11,11 +11,13 @@ export interface Option {
 export interface ResponseSheetData<T> {
   contents: T[];
   colms: string[];
+  totalCount: number;
 }
 
 export interface ResponseSheetsData {
   contents: any[];
   colms: string[];
+  totalCount: number;
 }
 
 export interface ResponseGoogleApiByRange {
