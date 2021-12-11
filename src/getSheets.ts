@@ -1,11 +1,20 @@
 import { JWT } from "google-auth-library";
-import { ResponseGoogleApiSheets, Option, ResponseSheetsData } from "./type";
+import {
+  ResponseGoogleApiSheets,
+  Option,
+  ResponseSheetsData,
+  Pagenation,
+} from "./type";
 import { parseJson } from "./utils/createJson";
 import { createUri } from "./utils/fetcher";
+import { pagenation } from "./utils/pagenation";
 
 export const getSheets = async (
   client: JWT,
-  option: Omit<Option, "range"> & { ranges: string[] }
+  option: Omit<Option, "range"> & { ranges: string[] },
+  queries?: {
+    pagenation: Pagenation;
+  }
 ): Promise<ResponseSheetsData[]> => {
   const accessToken = await client.getAccessToken();
   const getData = await fetch(
@@ -45,6 +54,20 @@ export const getSheets = async (
     });
 
     const contents = parseJson<any>(rows, colms);
+
+    if (queries) {
+      const { limit, offset } = queries.pagenation;
+      const pageItems = pagenation({
+        contents,
+        limit,
+        offset,
+      });
+      return {
+        contents: pageItems,
+        colms,
+      };
+    }
+
     return {
       colms,
       contents,

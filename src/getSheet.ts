@@ -1,11 +1,20 @@
 import { JWT } from "google-auth-library";
-import { ResponseSheetData, Option, ResponseGoogleApiByRange } from "./type";
+import {
+  ResponseSheetData,
+  Option,
+  ResponseGoogleApiByRange,
+  Pagenation,
+} from "./type";
 import { parseJson } from "./utils/createJson";
 import { createUri } from "./utils/fetcher";
+import { pagenation } from "./utils/pagenation";
 
 export const getSheet = async <T>(
   client: JWT,
-  option: Option
+  option: Option,
+  queries?: {
+    pagenation: Pagenation;
+  }
 ): Promise<ResponseSheetData<T>> => {
   const accessToken = await client.getAccessToken();
 
@@ -25,6 +34,18 @@ export const getSheet = async <T>(
       return row;
     });
     const contents = parseJson<T>(rows, colms);
+    if (queries) {
+      const { limit, offset } = queries.pagenation;
+      const pageItems = pagenation<T>({
+        contents,
+        limit,
+        offset,
+      });
+      return {
+        contents: pageItems,
+        colms,
+      };
+    }
     return { contents, colms };
   } else {
     throw new Error("Not Found sheet rows");
