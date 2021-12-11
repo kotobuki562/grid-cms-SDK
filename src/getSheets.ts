@@ -65,12 +65,14 @@ export const getSheets = async (
       return {
         contents: pageItems,
         colms,
+        totalCount: contents.length,
       };
     }
 
     return {
       colms,
       contents,
+      totalCount: contents.length,
     };
   });
   return resultRows;
